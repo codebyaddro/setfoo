@@ -17,11 +17,30 @@ const createProject = async (projectName, template) => {
     }
 
     try {
+        // Copy template
         await fs.copy(templatePath, targetPath);
+
+        // Rename hidden files
+        const renameFiles = [
+            ["gitignore", ".gitignore"],
+            ["env", ".env"],
+            ["env.example", ".env.example"],
+            ["dockerignore", ".dockerignore"],
+        ];
+
+        for (const [oldName, newName] of renameFiles) {
+            const oldPath = path.join(targetPath, oldName);
+            const newPath = path.join(targetPath, newName);
+
+            if (fs.existsSync(oldPath)) {
+                await fs.rename(oldPath, newPath);
+            }
+        }
 
         console.log(chalk.green("🚀 Project created successfully!"));
         console.log(chalk.blue(`👉 cd ${projectName}`));
         console.log(chalk.yellow("👉 npm install"));
+
     } catch (err) {
         console.error(chalk.red("❌ Error:"), err);
     }

@@ -1,15 +1,26 @@
 {
   "name": "setfoo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool to generate project structure",
   "main": "src/createProject.js",
   "bin": {
     "setfoo": "./bin/index.js"
   },
+  "files": [
+    "bin",
+    "src",
+    "templates"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["cli", "node", "mvc", "generator", "setfoo"],
+  "keywords": [
+    "cli",
+    "node",
+    "mvc",
+    "generator",
+    "setfoo"
+  ],
   "author": "Adnan Hossain Addro",
   "license": "MIT",
   "type": "module",
