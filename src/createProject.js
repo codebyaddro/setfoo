@@ -8,16 +8,35 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const createProject = async (projectName, template) => {
-    const templatePath = path.join(__dirname, "../templates", template);
-    const targetPath = path.join(process.cwd(), projectName);
+    // Absolute template path
+    const templatePath = path.resolve(
+        __dirname,
+        "..",
+        "templates",
+        template
+    );
 
+    // User project path
+    const targetPath = path.resolve(process.cwd(), projectName);
+
+    // Debug logs
+    console.log(chalk.cyan("📁 Template Path:"), templatePath);
+    console.log(chalk.cyan("📁 Target Path:"), targetPath);
+
+    // Check template exists
+    if (!fs.existsSync(templatePath)) {
+        console.log(chalk.red("❌ Template folder not found!"));
+        return;
+    }
+
+    // Prevent overwrite
     if (fs.existsSync(targetPath)) {
         console.log(chalk.red("❌ Folder already exists!"));
         return;
     }
 
     try {
-        // Copy template
+        // Copy template folder
         await fs.copy(templatePath, targetPath);
 
         // Rename hidden files
@@ -37,12 +56,12 @@ const createProject = async (projectName, template) => {
             }
         }
 
-        console.log(chalk.green("🚀 Project created successfully!"));
+        console.log(chalk.green("\n🚀 Project created successfully!"));
         console.log(chalk.blue(`👉 cd ${projectName}`));
         console.log(chalk.yellow("👉 npm install"));
 
     } catch (err) {
-        console.error(chalk.red("❌ Error:"), err);
+        console.error(chalk.red("❌ Error creating project:"), err);
     }
 };
 
